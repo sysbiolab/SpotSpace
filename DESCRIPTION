@@ -1,0 +1,24 @@
+Package: SpotSpace
+Type: Package
+Title: Methods for Projecting Network Signals in Spatial Transcriptomics
+Version: 0.0.1
+Authors@R: 
+  c(person("Jonathan", "Back", role = "ctr"),
+    person("Victor", "Apolonio", role = "ctr"),
+    person("Mauro", "Castro", role = c("aut", "cre"),
+              email = "mauro.a.castro@gmail.com",
+              comment = c(ORCID = "0000-0003-4942-8131")))
+Depends: R(>= 4.4), methods, RGraphSpace(>= 1.1.0), PathwaySpace(>= 1.0.3)
+Imports: igraph, RANN
+Suggests: knitr, rmarkdown, testthat, Seurat, SeuratObject, SeuratData, patchwork
+Description: The SpotSpace package extends PathwaySpace to support analysis of spatial transcriptomics data. It provides methods for integrating spot-level coordinates with network-based projections, allowing spatial mapping, nearest-neighbor searches, and signal propagation in tissue sections.
+License: Artistic-2.0
+VignetteBuilder: knitr
+URL: https://github.com/sysbiolab/PathwaySpace
+BugReports: https://github.com/sysbiolab/PathwaySpace/issues
+Collate:
+    spotChecks.R
+    spotSupplements.R
+    spotMethods.R
+Encoding: UTF-8
+RoxygenNote: 7.3.2

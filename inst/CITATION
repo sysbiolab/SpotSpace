@@ -1,0 +1,15 @@
+
+bibentry(bibtype = "Article",
+author = "Bahar Tercan, Victor H Apolonio, Vinicius S Chagas, Christopher K Wong, Jordan A Lee, Christina Yau, Christopher C Benz, Joshua M Stuart, Brian J Karlberg, Kyle Ellrott, Jasleen K Grewal, Steven JM Jones, The Cancer Genome Atlas Analysis Network, Jean C Zenklusen, A. Gordon Robertson, Peter W Laird, Andrew D Cherniack, Mauro AA Castro",
+title = "Protocol for assessing distances in pathway space for classifier feature sets from machine learning methods",
+journal = "STAR Protocols",
+year = "2025",
+volume = "6",
+number = "2",
+pages = "103681",
+doi = "10.1016/j.xpro.2025.103681",
+textVersion = paste("Tercan B, Apolonio VH, Chagas VS, Wong CK, Lee JA, et al.", 
+"Protocol for assessing distances in pathway space for classifier feature sets from machine learning methods.",
+"STAR Protocols 6(2):103681, 2025. doi: 10.1016/j.xpro.2025.103681", sep=" ")
+)
+
