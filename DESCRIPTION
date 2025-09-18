@@ -11,7 +11,7 @@ Authors@R:
 Depends: R(>= 4.4), methods, RGraphSpace(>= 1.1.0), PathwaySpace(>= 1.0.3)
 Imports: igraph, RANN
 Suggests: knitr, rmarkdown, testthat, Seurat, SeuratObject, SeuratData, patchwork
-Description: The SpotSpace package extends PathwaySpace to support analysis of spatial transcriptomics data. It provides methods for integrating spot-level coordinates with network-based projections, allowing spatial mapping, nearest-neighbor searches, and signal propagation in tissue sections.
+Description: The SpotSpace package extends PathwaySpace methods alongside Seurat workflows, providing tools for signal propagation and visualization in spatial transcriptomics. By integrating signal processing with spatial visualization, SpotSpace allows users to project network signals onto spot-level coordinates to explore signal patterns on tissue microenvironments.
 License: Artistic-2.0
 VignetteBuilder: knitr
 URL: https://github.com/sysbiolab/PathwaySpace
