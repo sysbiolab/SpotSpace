@@ -4,8 +4,7 @@
   [![](https://img.shields.io/badge/license-Artistic--2.0-blue.svg)](https://cran.r-project.org/web/licenses/Artistic-2.0)
   [![](https://img.shields.io/badge/doi-10.32614/CRAN.package.PathwaySpace-blue.svg)](https://doi.org/10.32614/CRAN.package.PathwaySpace)
   <!-- badges: end -->
-The *SpotSpace* package extends *PathwaySpace* to support analysis of spatial transcriptomics data. It provides methods for integrating spot-level coordinates with network-based projections, allowing spatial mapping, nearest-neighbor searches, and signal propagation in tissue sections.
-
+The *SpotSpace* package extends *PathwaySpace* methods alongside *Seurat* workflows, providing tools for signal propagation and visualization in spatial transcriptomics. By integrating signal processing with spatial visualization, *SpotSpace* allows users to project network signals onto spot-level coordinates to explore signal patterns on tissue microenvironments.
 ### Installation in R (>=4.4)
 
 ##### Install dependencies to build the package's vignettes
