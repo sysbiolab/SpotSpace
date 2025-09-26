@@ -13,24 +13,19 @@ The *SpotSpace* package extends *PathwaySpace* methods alongside *Seurat* workfl
 ```r
 install.packages("knitr")
 install.packages("rmarkdown")
-install.packages("Seurat")
-install.packages("SeuratObject")
-install.packages("patchwork")
 install.packages("remotes")
 ```
 
-##### Data package used in the examples
+##### Development version
 
 ```r
-remotes::install_github("satijalab/seurat-data")
-```
-
-##### Install the SpotSpace package
-
-```r
+# Main packages
 remotes::install_github("sysbiolab/RGraphSpace", build_vignettes=TRUE)
 remotes::install_github("sysbiolab/PathwaySpace", build_vignettes=TRUE)
 remotes::install_github("sysbiolab/SpotSpace", build_vignettes=TRUE)
+
+# Data package used in the examples
+remotes::install_github("satijalab/seurat-data")
 ```
 
 ### Examples
