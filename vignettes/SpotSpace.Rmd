@@ -23,7 +23,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Overview
 
-The *SpotSpace* package extends *PathwaySpace* methods alongside *Seurat* workflows, providing tools for signal propagation and visualization in spatial transcriptomics. By integrating signal processing with spatial visualization, *SpotSpace* allows users to project network signals onto spot-level coordinates to explore signal patterns on tissue microenvironments.
+The *SpotSpace* package extends *PathwaySpace* methods alongside *Seurat* workflows, providing methods for signal propagation and visualization in spatial transcriptomics. By integrating signal processing with spatial visualization, *SpotSpace* allows users to project network signals onto spot-level coordinates to explore signal patterns on tissue microenvironments.
 
 # Highlights
 
@@ -41,12 +41,12 @@ library(RGraphSpace)
 library(PathwaySpace)
 library(SpotSpace)
 #--- Load other required packages for this section
-# Note: 'SeuratData' is available from github, at
-# https://github.com/satijalab/seurat-data
 library(Seurat)
 library(SeuratObject)
 library(SeuratData)
 library(patchwork)
+# Note: 'SeuratData' is available from github, at
+# https://github.com/satijalab/seurat-data
 ```
 
 ```{r Intall dataset, eval=FALSE, message=FALSE, results='hide'}

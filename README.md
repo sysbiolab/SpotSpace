@@ -5,9 +5,10 @@
   [![](https://img.shields.io/badge/doi-10.32614/CRAN.package.PathwaySpace-blue.svg)](https://doi.org/10.32614/CRAN.package.PathwaySpace)
   <!-- badges: end -->
 The *SpotSpace* package extends *PathwaySpace* methods alongside *Seurat* workflows, providing tools for signal propagation and visualization in spatial transcriptomics. By integrating signal processing with spatial visualization, *SpotSpace* allows users to project network signals onto spot-level coordinates to explore signal patterns on tissue microenvironments.
+
 ### Installation in R (>=4.4)
 
-##### Install dependencies to build the package's vignettes
+##### Dependencies to build the vignettes
 
 ```r
 install.packages("knitr")
@@ -16,13 +17,17 @@ install.packages("Seurat")
 install.packages("SeuratObject")
 install.packages("patchwork")
 install.packages("remotes")
+```
+
+##### Data package used in the examples
+
+```r
 remotes::install_github("satijalab/seurat-data")
 ```
 
 ##### Install the SpotSpace package
 
 ```r
-install.packages("remotes")
 remotes::install_github("sysbiolab/RGraphSpace", build_vignettes=TRUE)
 remotes::install_github("sysbiolab/PathwaySpace", build_vignettes=TRUE)
 remotes::install_github("sysbiolab/SpotSpace", build_vignettes=TRUE)

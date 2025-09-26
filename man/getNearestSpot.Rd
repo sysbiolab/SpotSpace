@@ -14,13 +14,8 @@ getNearestSpot(ps)
 each spot based on Euclidean distances.
 }
 \examples{
-# Load a demo igraph
-data('gtoy1', package = 'RGraphSpace')
-
-# Check graph validity
-gs <- GraphSpace(gtoy1, mar = 0.1)
-
-# Create a new PathwaySpace object
+# See examples in the SpotSpace's vignette:
+vignette("SpotSpace")
 
 }
 \seealso{

@@ -19,13 +19,8 @@
 #' @author Sysbiolab Team
 #' @seealso \code{\link[PathwaySpace]{buildPathwaySpace}}
 #' @examples
-#' # Load a demo igraph
-#' data('gtoy1', package = 'RGraphSpace')
-#' 
-#' # Check graph validity
-#' gs <- GraphSpace(gtoy1, mar = 0.1)
-#' 
-#' # Create a new PathwaySpace object
+#' # See examples in the SpotSpace's vignette:
+#' vignette("SpotSpace")
 #' 
 #' @importFrom PathwaySpace buildPathwaySpace
 #' @importFrom RGraphSpace GraphSpace getGraphSpace
@@ -33,6 +28,9 @@
 #' @importFrom grDevices is.raster as.raster col2rgb
 #' @importFrom methods is
 #' @importFrom RANN nn2
+#' @importFrom Seurat SCTransform
+#' @importFrom SeuratObject GetTissueCoordinates GetImage GetAssayData
+#' @importFrom patchwork wrap_plots
 #' @aliases buildSpotSpace
 #' @export
 #' 
@@ -70,13 +68,8 @@ buildSpotSpace <- function(spot_coord, raster_image, mar = 0.1, nrc = 500,
 #' @param ps A \code{\link[PathwaySpace]{PathwaySpace}} class object.
 #' @seealso \code{\link[RANN]{nn2}}
 #' @examples
-#' # Load a demo igraph
-#' data('gtoy1', package = 'RGraphSpace')
-#' 
-#' # Check graph validity
-#' gs <- GraphSpace(gtoy1, mar = 0.1)
-#' 
-#' # Create a new PathwaySpace object
+#' # See examples in the SpotSpace's vignette:
+#' vignette("SpotSpace")
 #' 
 #' @importFrom RANN nn2
 #' @aliases getNearestSpot

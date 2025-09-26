@@ -41,13 +41,8 @@ columns of a square image matrix onto which spot signals will be projected.}
 PathwaySpace-class objects.
 }
 \examples{
-# Load a demo igraph
-data('gtoy1', package = 'RGraphSpace')
-
-# Check graph validity
-gs <- GraphSpace(gtoy1, mar = 0.1)
-
-# Create a new PathwaySpace object
+# See examples in the SpotSpace's vignette:
+vignette("SpotSpace")
 
 }
 \seealso{
