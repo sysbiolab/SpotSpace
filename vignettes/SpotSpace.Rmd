@@ -146,10 +146,10 @@ Before projection, we need to specify a distance unit for the signal decay funct
 
 ```{r Check spot distances, eval=FALSE, message=FALSE}
 # Get distance to the nearest spot
-nspot <- getNearestSpot(ps_brain)
-m_dist <- mean(nspot$dist) # average distance
-# The 'm_dist' is the center-to-center distance between spots
-m_dist
+near_df <- getNearestNode(ps_brain)
+pdist <- mean(near_df$dist) # average distance
+# The 'pdist' is the center-to-center distance between spots
+pdist
 # [1] 0.01395144
 ```
 
@@ -159,7 +159,7 @@ We then perform the signal projection, setting `decay = 0.5`. The decay paramete
 
 ```{r Run PathwaySpace, eval=FALSE, message=FALSE}
 # Project gene signal
-ps_brain <- circularProjection(ps_brain, pdist = m_dist, 
+ps_brain <- circularProjection(ps_brain, pdist = pdist, 
   k = gs_vcount(ps_brain), decay.fun = signalDecay(decay=0.5),
   aggregate.fun = signalAggregation("wmean"))
 ```

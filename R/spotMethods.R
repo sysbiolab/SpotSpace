@@ -60,9 +60,9 @@ buildSpotSpace <- function(spot_coord, raster_image, mar = 0.1, nrc = 500,
 
 
 #-------------------------------------------------------------------------------
-#' @title  getNearestSpot
+#' @title  getNearestNode
 #' 
-#' @description \code{getNearestSpot} retrieves the nearest neighbor for 
+#' @description \code{getNearestNode} retrieves the nearest neighbor for 
 #' each spot based on Euclidean distances.
 #' 
 #' @param ps A \code{\link[PathwaySpace]{PathwaySpace}} class object.
@@ -72,10 +72,10 @@ buildSpotSpace <- function(spot_coord, raster_image, mar = 0.1, nrc = 500,
 #' vignette("SpotSpace")
 #' 
 #' @importFrom RANN nn2
-#' @aliases getNearestSpot
+#' @aliases getNearestNode
 #' @export
 #' 
-getNearestSpot <- function(ps){
+getNearestNode <- function(ps){
   if(!is(ps, "GraphSpace")){
     stop("'ps' should be either a 'GraphSpace' or 'PathwaySpace' class object.")
   }
