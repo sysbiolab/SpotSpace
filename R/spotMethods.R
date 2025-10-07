@@ -47,11 +47,20 @@ buildSpotSpace <- function(spot_coord, raster_image, mar = 0.1, nrc = 500,
   .validate.spot.args("singleLogical", "flip.y", flip.y)
   .validate.spot.args("singleLogical", "flip.x", flip.x)
   .validate.spot.args("singleLogical", "verbose", verbose)
-  
+  if(missing(raster_image) || is.null(raster_image)){
+    g <- .graphFromCoordinates(coord = spot_coord, 
+      rotate.xy = rotate.xy, flip.y = flip.y, 
+      flip.x = flip.x)
+    g_lt <- list(g=g, image=NULL)
+  } else {
+    if(!is.matrix(raster_image) && !is.raster(raster_image)){
+      stop("'raster_image' should a raster image or matrix." )
+    }
+    g_lt <- .graphFromImageCoordinates(coord = spot_coord, 
+      image = raster_image, rotate.xy = rotate.xy, flip.y = flip.y, 
+      flip.x = flip.x)
+  }
   #--- build GraphSpace-class
-  g_lt <- .graphFromImageCoordinates(coord = spot_coord, 
-    image = raster_image, rotate.xy = rotate.xy, flip.y = flip.y, 
-    flip.x = flip.x)
   gs <- GraphSpace(g = g_lt$g, image = g_lt$image, mar = mar, 
     verbose = verbose)
   ps <- buildPathwaySpace(gs, nrc = nrc, verbose = verbose)
