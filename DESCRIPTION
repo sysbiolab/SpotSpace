@@ -1,7 +1,7 @@
 Package: SpotSpace
 Type: Package
 Title: Methods for Projecting Network Signals in Spatial Transcriptomics
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: 
   c(person("Jonathan", "Back", role = "ctr"),
     person("Victor", "Apolonio", role = "ctr"),
