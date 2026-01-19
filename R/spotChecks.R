@@ -3,7 +3,7 @@
 .validate.spot.args <- function(check, name, para) {
   if (check == "numeric_vec") {
     msg <- paste0("'", name, "' should be a numeric vector.")
-    if (!is.numeric(para) || !is.vector(para)) stop(msg, call. = FALSE)
+    if (!.is_numericVector(para)) stop(msg, call. = FALSE)
   } else if (check == "numeric_mtx") {
     msg <- paste0("'", name, "' should be a numeric matrix.")
     if (!is.numeric(para) || !is.matrix(para)) 

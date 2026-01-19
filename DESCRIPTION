@@ -1,7 +1,7 @@
 Package: SpotSpace
 Type: Package
 Title: Methods for Projecting Network Signals in Spatial Transcriptomics
-Version: 0.0.2
+Version: 0.0.4
 Authors@R: 
   c(person("Jonathan", "Back", role = "ctr"),
     person("Victor", "Apolonio", role = "ctr"),
@@ -9,7 +9,7 @@ Authors@R:
               email = "mauro.a.castro@gmail.com",
               comment = c(ORCID = "0000-0003-4942-8131")))
 Depends: R(>= 4.4), methods, RGraphSpace(>= 1.1.0), PathwaySpace(>= 1.0.3)
-Imports: igraph, RANN, Seurat, SeuratObject, patchwork
+Imports: igraph, RANN, Seurat, SeuratObject, patchwork, scales
 Suggests: knitr, rmarkdown, testthat, SeuratData
 Description: The SpotSpace package extends PathwaySpace methods alongside Seurat workflows, providing tools for signal propagation and visualization in spatial transcriptomics. By integrating signal processing with spatial visualization, SpotSpace allows users to project network signals onto spot-level coordinates to explore signal patterns on tissue microenvironments.
 License: Artistic-2.0

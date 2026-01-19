@@ -86,6 +86,13 @@
 .graphFromCoordinates <- function(coord, rotate.xy = TRUE,
   flip.y = TRUE, flip.x = FALSE){
   
+  # Check attributes
+  attr <- colnames(coord)
+  if(!all(c("x","y") %in% attr)){
+    stop("'coord' is missing 'x' and 'y' coordinates.")
+  }
+  attr <- attr[!attr%in%c("x","y")]
+  
   # Rotated coordinates
   if(rotate.xy){
     coord$x2 <- coord$y
@@ -115,6 +122,12 @@
   V(g)$x <- coord$x2
   V(g)$y <- coord$y2
   V(g)$nodeSize <- 0.5
+  
+  if(length(attr)>0){
+    for(name in attr){
+      igraph::vertex_attr(g, name) <- coord[[name]]
+    }
+  }
   
   return(g)
   

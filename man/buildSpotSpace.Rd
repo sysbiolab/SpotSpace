@@ -12,6 +12,7 @@ buildSpotSpace(
   rotate.xy = TRUE,
   flip.y = TRUE,
   flip.x = FALSE,
+  crop_coord = c(0, 1, 0, 1),
   verbose = TRUE
 )
 }
@@ -33,6 +34,10 @@ columns of a square image matrix onto which spot signals will be projected.}
 \item{flip.y}{Logical; whether to flip the `raster_image` along the y-axis.}
 
 \item{flip.x}{Logical; whether to flip the `raster_image` along the x-axis.}
+
+\item{crop_coord}{An optional numeric vector of length four specifying a
+cropping region (xmin, xmax, ymin, ymax), with values in normalized 
+coordinates [0,1].}
 
 \item{verbose}{Logical; whether to display detailed messages.}
 }
