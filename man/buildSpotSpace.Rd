@@ -47,7 +47,7 @@ PathwaySpace-class objects.
 }
 \examples{
 # See examples in the SpotSpace's vignette:
-vignette("SpotSpace")
+# vignette("SpotSpace")
 
 }
 \seealso{

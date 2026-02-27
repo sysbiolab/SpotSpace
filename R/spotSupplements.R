@@ -112,7 +112,8 @@
   flip.y = TRUE, flip.x = FALSE, verbose = TRUE){
   
   # Check attributes
-  attr <- colnames(coord)
+  attr <- unique(colnames(coord))
+  attr <- attr[!is.na(attr)]
   if(!all(c("x","y") %in% attr)){
     stop("'coord' is missing 'x' and 'y' coordinates.")
   }

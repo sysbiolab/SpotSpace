@@ -23,7 +23,7 @@
 #' @seealso \code{\link[PathwaySpace]{buildPathwaySpace}}
 #' @examples
 #' # See examples in the SpotSpace's vignette:
-#' vignette("SpotSpace")
+#' # vignette("SpotSpace")
 #' 
 #' @importFrom PathwaySpace buildPathwaySpace
 #' @importFrom RGraphSpace GraphSpace getGraphSpace
@@ -137,7 +137,7 @@ buildSpotSpace <- function(spot_coord, raster_image, mar = 0.1,
 #' @seealso \code{\link[RANN]{nn2}}
 #' @examples
 #' # See examples in the SpotSpace's vignette:
-#' vignette("SpotSpace")
+#' # vignette("SpotSpace")
 #' 
 #' @importFrom RANN nn2
 #' @aliases getNearestNode

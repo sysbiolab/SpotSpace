@@ -15,7 +15,7 @@ each spot based on Euclidean distances.
 }
 \examples{
 # See examples in the SpotSpace's vignette:
-vignette("SpotSpace")
+# vignette("SpotSpace")
 
 }
 \seealso{
