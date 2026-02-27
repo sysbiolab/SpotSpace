@@ -55,7 +55,7 @@ buildSpotSpace <- function(spot_coord, raster_image, mar = 0.1,
   if(missing(raster_image) || is.null(raster_image)){
     g <- .graphFromCoordinates(coord = spot_coord, 
       rotate.xy = rotate.xy, flip.y = flip.y, 
-      flip.x = flip.x)
+      flip.x = flip.x, verbose = verbose)
     g_lt <- list(g=g, image=NULL)
   } else {
     if(!is.matrix(raster_image) && !is.raster(raster_image)){
@@ -63,7 +63,7 @@ buildSpotSpace <- function(spot_coord, raster_image, mar = 0.1,
     }
     g_lt <- .graphFromImageCoordinates(coord = spot_coord, 
       image = raster_image, rotate.xy = rotate.xy, flip.y = flip.y, 
-      flip.x = flip.x)
+      flip.x = flip.x, verbose = verbose)
   }
   if(length(crop_coord)!=4){
     stop("'crop_coord' should be a numeric vector of length = 4.")

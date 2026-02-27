@@ -159,8 +159,8 @@ We then perform the signal projection, setting `decay = 0.5`. The decay paramete
 
 ```{r Run PathwaySpace, eval=FALSE, message=FALSE}
 # Project gene signal
-ps_brain <- circularProjection(ps_brain, pdist = pdist, 
-  k = gs_vcount(ps_brain), decay.fun = signalDecay(decay=0.5),
+ps_brain <- circularProjection(ps_brain, k = gs_vcount(ps_brain), 
+  decay.fun = weibullDecay(decay=0.5, pdist = pdist),
   aggregate.fun = signalAggregation("wmean"))
 ```
 

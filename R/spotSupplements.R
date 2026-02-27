@@ -20,20 +20,20 @@
 
 #-------------------------------------------------------------------------------
 .graphFromImageCoordinates <- function(coord, image, rotate.xy = TRUE,
-  flip.y = TRUE, flip.x = FALSE){
+  flip.y = TRUE, flip.x = FALSE, verbose = TRUE){
   
   # Check attributes
   if(!is.data.frame(coord) || is.null(rownames(coord)) ){
-    stop("'coord' should be a rownamed data frame.")
+    stop("'coord' should be a rownamed data frame.", call. = FALSE)
   }
   if(is.null(colnames(coord)) || is.null(rownames(coord)) ){
-    stop("'coord' should be a row- and col-named data frame.")
+    stop("'coord' should be a row- and col-named data frame.", call. = FALSE)
   }
   
   # Check attributes
   attr <- colnames(coord)
   if(!all(c("x","y") %in% attr)){
-    stop("'coord' is missing 'x' and 'y' coordinates.")
+    stop("'coord' is missing 'x' and 'y' coordinates.", call. = FALSE)
   }
   attr <- attr[!attr%in%c("x","y")]
   
@@ -42,6 +42,7 @@
   
   # Rotated coordinates
   if(rotate.xy){
+    if(verbose) message("Rotating xy-coordinates...")
     coord$x2 <- coord$y
     coord$y2 <- coord$x
   } else {
@@ -51,14 +52,38 @@
   
   # Flip y-coordinates over image axis
   if(flip.y){
+    if(verbose) message("Flipping y-coordinates...")
     y <- coord$y2
-    coord$y2 <- -(y - max(y)) + nrow(image) - max(y) + 1
+    y <- -(y - max(y)) + nrow(image) - max(y) + 1
+    rg <- range(y)
+    if(min(rg)<1 || max(rg)>nrow(image)){
+      ms2 <- "Revise buildSpotSpace() arguments."
+      if(rotate.xy){
+        ms1 <- "Coordinate rotation/flip not compatible with the input image dimensions. "
+      } else {
+        ms1 <- "Coordinate flip not compatible with the input image dimensions. "
+      }
+      stop(paste0(ms1, ms2), call. = FALSE)
+    }
+    coord$y2 <- y
   }
   
   # Flip x-coordinates over image axis
   if(flip.x){
+    if(verbose) message("Flipping x-coordinates...")
     x <- coord$x2
-    coord$x2 <- -(x - max(x)) + ncol(image) - max(x) + 1
+    x <- -(x - max(x)) + ncol(image) - max(x) + 1
+    rg <- range(x)
+    if(min(rg)<1 || max(rg)>ncol(image)){
+      ms2 <- "Revise buildSpotSpace() arguments."
+      if(rotate.xy){
+        ms1 <- "Coordinate rotation/flip not compatible with the input image dimensions. "
+      } else {
+        ms1 <- "Coordinate flip not compatible with the input image dimensions. "
+      }
+      stop(paste0(ms1, ms2), call. = FALSE)
+    }
+    coord$x2 <- x
   }
   
   # Initialize a graph using 'spots' as vertices, with no edges
@@ -84,7 +109,7 @@
 
 #-------------------------------------------------------------------------------
 .graphFromCoordinates <- function(coord, rotate.xy = TRUE,
-  flip.y = TRUE, flip.x = FALSE){
+  flip.y = TRUE, flip.x = FALSE, verbose = TRUE){
   
   # Check attributes
   attr <- colnames(coord)
@@ -95,6 +120,7 @@
   
   # Rotated coordinates
   if(rotate.xy){
+    if(verbose) message("Rotating xy-coordinates...")
     coord$x2 <- coord$y
     coord$y2 <- coord$x
   } else {
@@ -104,12 +130,14 @@
   
   # Flip y-coordinates
   if(flip.y){
+    if(verbose) message("Flipping y-coordinates...")
     y <- coord$y2
     coord$y2 <- -(y - max(y)) - max(y) + 1
   }
   
   # Flip x-coordinates
   if(flip.x){
+    if(verbose) message("Flipping x-coordinates...")
     x <- coord$x2
     coord$x2 <- -(x - max(x)) - max(x) + 1
   }
