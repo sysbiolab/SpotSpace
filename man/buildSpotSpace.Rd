@@ -9,9 +9,9 @@ buildSpotSpace(
   raster_image,
   mar = 0.1,
   nrc = 500,
-  rotate.xy = TRUE,
-  flip.y = TRUE,
   flip.x = FALSE,
+  flip.y = TRUE,
+  rotate.xy = FALSE,
   crop_coord = c(0, 1, 0, 1),
   verbose = TRUE
 )
@@ -29,11 +29,11 @@ outer margins as a fraction of the image matrix defined by `nrc`.}
 \item{nrc}{A single positive integer indicating the number of rows and 
 columns of a square image matrix onto which spot signals will be projected.}
 
-\item{rotate.xy}{Logical; whether to rotate the `raster_image`.}
+\item{flip.x}{Logical; whether to flip the `raster_image` along the x-axis.}
 
 \item{flip.y}{Logical; whether to flip the `raster_image` along the y-axis.}
 
-\item{flip.x}{Logical; whether to flip the `raster_image` along the x-axis.}
+\item{rotate.xy}{Logical; whether to rotate the `raster_image`.}
 
 \item{crop_coord}{An optional numeric vector of length four specifying a
 cropping region (xmin, xmax, ymin, ymax), with values in normalized 
@@ -42,8 +42,18 @@ coordinates [0,1].}
 \item{verbose}{Logical; whether to display detailed messages.}
 }
 \description{
-\code{buildSpotSpace} is a constructor of
-PathwaySpace-class objects.
+\code{buildSpotSpace} constructs a PathwaySpace-class object 
+by integrating spatial spot coordinates with a raster image background.
+}
+\details{
+Proper spatial alignment between spot coordinates and the background image 
+depends on consistent coordinate conventions. Different graphics systems 
+and external software may adopt distinct origins and rendering directions 
+(e.g., top-left vs. bottom-left). To address these differences, 
+\code{buildSpotSpace} provides orientation control through \code{rotate.xy}, 
+\code{flip.x}, and \code{flip.y}. If misalignment is observed, users 
+should test alternative combinations of these arguments to achieve 
+correct spatial alignment.
 }
 \examples{
 # See examples in the SpotSpace's vignette:

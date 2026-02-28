@@ -1,8 +1,7 @@
-
-#' @title  Constructor of PathwaySpace-class Objects
+#' @title Constructor of PathwaySpace-class Objects
 #' 
-#' @description \code{buildSpotSpace} is a constructor of
-#' PathwaySpace-class objects.
+#' @description \code{buildSpotSpace} constructs a PathwaySpace-class object 
+#' by integrating spatial spot coordinates with a raster image background.
 #' 
 #' @param spot_coord A data frame with spot coordinates. It must include 
 #' row names and coordinates assigned to `x` and `y` column names.
@@ -21,6 +20,17 @@
 #' @param verbose Logical; whether to display detailed messages.
 #' @author Sysbiolab Team
 #' @seealso \code{\link[PathwaySpace]{buildPathwaySpace}}
+#' 
+#' @details
+#' Proper spatial alignment between spot coordinates and the background image 
+#' depends on consistent coordinate conventions. Different graphics systems 
+#' and external software may adopt distinct origins and rendering directions 
+#' (e.g., top-left vs. bottom-left). To address these differences, 
+#' \code{buildSpotSpace} provides orientation control through \code{rotate.xy}, 
+#' \code{flip.x}, and \code{flip.y}. If misalignment is observed, users 
+#' should test alternative combinations of these arguments to achieve 
+#' correct spatial alignment.
+#' 
 #' @examples
 #' # See examples in the SpotSpace's vignette:
 #' # vignette("SpotSpace")
@@ -39,7 +49,7 @@
 #' @export
 #' 
 buildSpotSpace <- function(spot_coord, raster_image, mar = 0.1, 
-  nrc = 500, rotate.xy = TRUE, flip.y = TRUE, flip.x = FALSE, 
+  nrc = 500, flip.x = FALSE, flip.y = TRUE, rotate.xy = FALSE,
   crop_coord = c(0, 1, 0, 1), verbose = TRUE) {
   
   if(verbose) message("Validating arguments...")
@@ -47,9 +57,9 @@ buildSpotSpace <- function(spot_coord, raster_image, mar = 0.1,
   #--- validate argument types
   .validate.spot.args("singleNumber", "mar", mar)
   .validate.spot.args("singleNumber", "nrc", nrc)
-  .validate.spot.args("singleLogical", "rotate.xy", rotate.xy)
-  .validate.spot.args("singleLogical", "flip.y", flip.y)
   .validate.spot.args("singleLogical", "flip.x", flip.x)
+  .validate.spot.args("singleLogical", "flip.y", flip.y)
+  .validate.spot.args("singleLogical", "rotate.xy", rotate.xy)
   .validate.spot.args("numeric_vec", "crop_coord", crop_coord)
   .validate.spot.args("singleLogical", "verbose", verbose)
   if(missing(raster_image) || is.null(raster_image)){

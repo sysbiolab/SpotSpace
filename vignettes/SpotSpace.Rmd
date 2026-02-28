@@ -96,6 +96,8 @@ xy_labs <- labs(x="Spot coordinates 1", y="Spot coordinates 2")
 plotGraphSpace(ps_brain, add.image = TRUE) + xy_labs
 ```
 
+*Note on image alignment*: Proper spatial alignment between spot coordinates and the background image depends on consistent coordinate conventions. Different graphics systems and external tools may use distinct origins and rendering directions (e.g., top-left vs. bottom-left). To address these differences, `buildSpotSpace()` provides orientation control through the `rotate.xy`, `flip.x`, and `flip.y` arguments. If the spots appear misaligned with the image, try alternative combinations of these parameters to correct the image orientation and ensure proper alignment between spots and the image.
+
 ```{r fig1.png, eval=FALSE, message=FALSE, echo=FALSE, include=FALSE, purl=FALSE}
 # gg <- plotGraphSpace(ps_brain, add.image = TRUE, 
 #   xlab = "Spot coordinates 1", ylab = "Spot coordinates 2")
