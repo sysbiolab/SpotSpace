@@ -10,7 +10,7 @@ buildSpotSpace(
   mar = 0.1,
   nrc = 500,
   flip.x = FALSE,
-  flip.y = TRUE,
+  flip.y = FALSE,
   rotate.xy = FALSE,
   crop_coord = c(0, 1, 0, 1),
   verbose = TRUE
@@ -24,10 +24,11 @@ row names and coordinates assigned to `x` and `y` column names.}
 spot coordinates are mapped.}
 
 \item{mar}{A single numeric value (in [0,1]) indicating the size of the 
-outer margins as a fraction of the image matrix defined by `nrc`.}
+outer margins (see \code{\link[RGraphSpace]{GraphSpace}}).}
 
 \item{nrc}{A single positive integer indicating the number of rows and 
-columns of a square image matrix onto which spot signals will be projected.}
+columns of a square image matrix onto which spot signals will be projected
+(see \code{\link[PathwaySpace]{buildPathwaySpace}}).}
 
 \item{flip.x}{Logical; whether to flip the `raster_image` along the x-axis.}
 

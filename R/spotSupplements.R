@@ -19,8 +19,8 @@
 }
 
 #-------------------------------------------------------------------------------
-.graphFromImageCoordinates <- function(coord, image, rotate.xy = TRUE,
-  flip.y = TRUE, flip.x = FALSE, verbose = TRUE){
+.graphFromImageCoordinates <- function(coord, image, rotate.xy = FALSE,
+  flip.y = FALSE, flip.x = FALSE, verbose = TRUE){
   
   # Check attributes
   if(!is.data.frame(coord) || is.null(rownames(coord)) ){
@@ -108,8 +108,8 @@
 }
 
 #-------------------------------------------------------------------------------
-.graphFromCoordinates <- function(coord, rotate.xy = TRUE,
-  flip.y = TRUE, flip.x = FALSE, verbose = TRUE){
+.graphFromCoordinates <- function(coord, rotate.xy = FALSE,
+  flip.y = FALSE, flip.x = FALSE, verbose = TRUE){
   
   # Check attributes
   attr <- unique(colnames(coord))

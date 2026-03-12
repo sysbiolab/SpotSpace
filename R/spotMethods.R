@@ -8,9 +8,10 @@
 #' @param raster_image A raster image serving as the background on which 
 #' spot coordinates are mapped.
 #' @param nrc A single positive integer indicating the number of rows and 
-#' columns of a square image matrix onto which spot signals will be projected.
+#' columns of a square image matrix onto which spot signals will be projected
+#' (see \code{\link[PathwaySpace]{buildPathwaySpace}}).
 #' @param mar A single numeric value (in [0,1]) indicating the size of the 
-#' outer margins as a fraction of the image matrix defined by `nrc`.
+#' outer margins (see \code{\link[RGraphSpace]{GraphSpace}}).
 #' @param rotate.xy Logical; whether to rotate the `raster_image`.
 #' @param flip.y Logical; whether to flip the `raster_image` along the y-axis.
 #' @param flip.x Logical; whether to flip the `raster_image` along the x-axis.
@@ -49,14 +50,12 @@
 #' @export
 #' 
 buildSpotSpace <- function(spot_coord, raster_image, mar = 0.1, 
-  nrc = 500, flip.x = FALSE, flip.y = TRUE, rotate.xy = FALSE,
+  nrc = 500, flip.x = FALSE, flip.y = FALSE, rotate.xy = FALSE,
   crop_coord = c(0, 1, 0, 1), verbose = TRUE) {
   
   if(verbose) message("Validating arguments...")
   
   #--- validate argument types
-  .validate.spot.args("singleNumber", "mar", mar)
-  .validate.spot.args("singleNumber", "nrc", nrc)
   .validate.spot.args("singleLogical", "flip.x", flip.x)
   .validate.spot.args("singleLogical", "flip.y", flip.y)
   .validate.spot.args("singleLogical", "rotate.xy", rotate.xy)
@@ -87,7 +86,7 @@ buildSpotSpace <- function(spot_coord, raster_image, mar = 0.1,
   
   #-------------------------------------------------------------------------------
   if( !missing(crop_coord) ){
-    gs <- .crop_gspace(gs, crop_coord, mar)
+    gs <- .crop_gspace(gs, crop_coord)
   }
 
   ps <- buildPathwaySpace(gs, nrc = nrc, verbose = verbose)
@@ -95,7 +94,7 @@ buildSpotSpace <- function(spot_coord, raster_image, mar = 0.1,
   return(ps)
 }
 
-.crop_gspace <- function(gs, crop_coord, mar){
+.crop_gspace <- function(gs, crop_coord){
   
   # remove nodes
   nodes <- gs@nodes
@@ -104,14 +103,14 @@ buildSpotSpace <- function(spot_coord, raster_image, mar = 0.1,
   nodes <- nodes[ which(cx & cy), ]
   
   # remove edges
-  idx <- (gs@edges$name1 %in% gs@nodes$name) & (gs@edges$name2 %in% gs@nodes$name) 
+  idx <- (gs@edges$name1 %in% gs@nodes$name) & 
+    (gs@edges$name2 %in% gs@nodes$name) 
   gs@edges <- gs@edges[idx,]
   
   # center nodes
   nodes$x <- nodes$x - mean(range(nodes$x))
   nodes$y <- nodes$y - mean(range(nodes$y))
   from <- range(c(nodes$x, nodes$y))
-  to <- c(mar, 1-mar)
   nodes$x <- scales::rescale(nodes$x, from = from, to=c(0,1))
   nodes$y <- scales::rescale(nodes$y, from = from, to=c(0,1))
   
