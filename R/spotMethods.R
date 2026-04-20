@@ -1,42 +1,52 @@
-#' @title Constructor of PathwaySpace-class Objects
-#' 
-#' @description \code{buildSpotSpace} constructs a PathwaySpace-class object 
-#' by integrating spatial spot coordinates with a raster image background.
+
+#-------------------------------------------------------------------------------
+#' Constructor for GraphSpace-class objects from spot coordinates
+#'
+#' \code{buildSpotSpace} constructs a \code{GraphSpace-class} object 
+#' by integrating spatial spot coordinates with a raster background. This 
+#' wrapper streamlines data preparation for graph and spatial workflows, 
+#' such as in the \code{PathwaySpace} package.
 #' 
 #' @param spot_coord A data frame with spot coordinates. It must include 
 #' row names and coordinates assigned to `x` and `y` column names.
 #' @param raster_image A raster image serving as the background on which 
 #' spot coordinates are mapped.
-#' @param nrc A single positive integer indicating the number of rows and 
-#' columns of a square image matrix onto which spot signals will be projected
-#' (see \code{\link[PathwaySpace]{buildPathwaySpace}}).
-#' @param mar A single numeric value (in [0,1]) indicating the size of the 
-#' outer margins (see \code{\link[RGraphSpace]{GraphSpace}}).
-#' @param rotate.xy Logical; whether to rotate the `raster_image`.
-#' @param flip.y Logical; whether to flip the `raster_image` along the y-axis.
-#' @param flip.x Logical; whether to flip the `raster_image` along the x-axis.
-#' @param crop_coord An optional numeric vector of length four specifying a  
-#' cropping region (xmin, xmax, ymin, ymax), with values in normalized 
-#' coordinates [0,1].
+#' @param mar A single numeric value in \code{[0, 0.5]} for the graph margins.
+#' @param flip.v Logical; whether to vertically flip the background image  
+#' matrix (top-to-bottom) to align with the graph coordinate system.
+#' @param flip.h Logical; whether to horizontally flip the background image  
+#' matrix (left-to-right) to align with the graph coordinate system.
+#' @param flip.y Logical; whether to flip the node coordinates along the y-axis.
+#' @param flip.x Logical; whether to flip the node coordinates along the x-axis.
+#' @param rotate.xy Logical; whether to rotate graph coordinates.
 #' @param verbose Logical; whether to display detailed messages.
-#' @author Sysbiolab Team
-#' @seealso \code{\link[PathwaySpace]{buildPathwaySpace}}
+#' @param crop_coord `r lifecycle::badge("deprecated")` Deprecated since
+#' SpotSpace 0.0.7; use \link[RGraphSpace]{cropGraphSpace} instead.
+#' @param nrc `r lifecycle::badge("deprecated")` Deprecated since
+#' SpotSpace 0.0.7; use \link[PathwaySpace]{buildPathwaySpace} instead.
 #' 
 #' @details
-#' Proper spatial alignment between spot coordinates and the background image 
-#' depends on consistent coordinate conventions. Different graphics systems 
-#' and external software may adopt distinct origins and rendering directions 
-#' (e.g., top-left vs. bottom-left). To address these differences, 
-#' \code{buildSpotSpace} provides orientation control through \code{rotate.xy}, 
-#' \code{flip.x}, and \code{flip.y}. If misalignment is observed, users 
-#' should test alternative combinations of these arguments to achieve 
-#' correct spatial alignment.
+#' Spatial alignment between spot coordinates and background images 
+#' often requires orientation adjustments due to differing coordinate 
+#' conventions (e.g., top-left vs. bottom-left origins). \code{buildSpotSpace} 
+#' automates the initial object creation and calls \code{normalizeGraphSpace} 
+#' internally to handle these adjustments via \code{rotate.xy}, \code{flip.x}, 
+#' and \code{flip.y}.
 #' 
+#' @return A \code{\link[RGraphSpace:GraphSpace-class]{GraphSpace}} object with 
+#' integrated spatial and image data.
+#' 
+#' @author Sysbiolab Team
+#' 
+#' @seealso \link[RGraphSpace]{GraphSpace}, 
+#' \link[RGraphSpace]{normalizeGraphSpace}, 
+#' \link[PathwaySpace]{buildPathwaySpace}
 #' @examples
-#' # See examples in the SpotSpace's vignette:
-#' # vignette("SpotSpace")
+#' # See examples in the PathwaySpace's online tutorials:
+#' # https://sysbiolab.github.io/PathwaySpace/
 #' 
-#' @importFrom PathwaySpace buildPathwaySpace
+#' @importFrom PathwaySpace buildPathwaySpace 
+#' @importFrom RGraphSpace normalizeGraphSpace
 #' @importFrom RGraphSpace GraphSpace getGraphSpace
 #' @importFrom igraph make_empty_graph V 'V<-'
 #' @importFrom grDevices is.raster as.raster col2rgb
@@ -46,94 +56,80 @@
 #' @importFrom SeuratObject GetTissueCoordinates GetImage GetAssayData
 #' @importFrom patchwork wrap_plots
 #' @importFrom scales rescale
+#' @importFrom lifecycle deprecated is_present deprecate_soft
 #' @aliases buildSpotSpace
 #' @export
-#' 
 buildSpotSpace <- function(spot_coord, raster_image, mar = 0.1, 
-  nrc = 500, flip.x = FALSE, flip.y = FALSE, rotate.xy = FALSE,
-  crop_coord = c(0, 1, 0, 1), verbose = TRUE) {
+  flip.v = FALSE, flip.h = FALSE, flip.x = FALSE, flip.y = TRUE,
+  rotate.xy = FALSE, verbose = TRUE, 
+  crop_coord = deprecated(), 
+  nrc = deprecated()){
   
-  if(verbose) message("Validating arguments...")
+  ### deprecate
+  if (lifecycle::is_present(crop_coord)) {
+    deprecate_soft("0.0.7", "buildSpotSpace(crop_coord)", 
+      "cropGraphSpace()")
+  }
+  if (lifecycle::is_present(nrc)) {
+    deprecate_soft("0.0.7", "buildSpotSpace(nrc)", 
+      "buildPathwaySpace(nrc)")
+  }
   
-  #--- validate argument types
-  .validate.spot.args("singleLogical", "flip.x", flip.x)
-  .validate.spot.args("singleLogical", "flip.y", flip.y)
-  .validate.spot.args("singleLogical", "rotate.xy", rotate.xy)
-  .validate.spot.args("numeric_vec", "crop_coord", crop_coord)
-  .validate.spot.args("singleLogical", "verbose", verbose)
-  if(missing(raster_image) || is.null(raster_image)){
-    g <- .graphFromCoordinates(coord = spot_coord, 
-      rotate.xy = rotate.xy, flip.y = flip.y, 
-      flip.x = flip.x, verbose = verbose)
-    g_lt <- list(g=g, image=NULL)
-  } else {
-    if(!is.matrix(raster_image) && !is.raster(raster_image)){
-      stop("'raster_image' should a raster image or matrix." )
-    }
-    g_lt <- .graphFromImageCoordinates(coord = spot_coord, 
-      image = raster_image, rotate.xy = rotate.xy, flip.y = flip.y, 
-      flip.x = flip.x, verbose = verbose)
+  if(!is.data.frame(spot_coord)){
+    stop("'spot_coord' must be a 'data.frame'.",
+      call. = FALSE)
   }
-  if(length(crop_coord)!=4){
-    stop("'crop_coord' should be a numeric vector of length = 4.")
+  if(!all(c("x","y") %in% colnames(spot_coord))){
+    stop("'spot_coord' is missing 'x' and 'y' coordinates.",
+      call. = FALSE)
   }
-  if(any(crop_coord < 0) || any(crop_coord > 1)){
-    stop("'crop_coord' should be in [0,1].")
-  }
+  
+  g <- .graphFromCoordinates(spot_coord)
+  
   #--- build GraphSpace-class
-  gs <- GraphSpace(g = g_lt$g, image = g_lt$image, mar = mar, 
-    verbose = verbose)
+  gs <- GraphSpace(g = g, verbose = verbose)
   
-  #-------------------------------------------------------------------------------
-  if( !missing(crop_coord) ){
-    gs <- .crop_gspace(gs, crop_coord)
+  if(missing(raster_image)){
+    gs <- normalizeGraphSpace(gs, mar = mar,  
+      flip.x = flip.x, flip.y = flip.y, 
+      rotate.xy = rotate.xy,
+      verbose = verbose)
+  } else {
+    gs <- normalizeGraphSpace(gs, raster_image, mar = mar, 
+      flip.x = flip.x, flip.y = flip.y, rotate.xy = rotate.xy, 
+      flip.v = flip.v, flip.h = flip.h, 
+      verbose = verbose)
   }
-
-  ps <- buildPathwaySpace(gs, nrc = nrc, verbose = verbose)
   
-  return(ps)
 }
 
-.crop_gspace <- function(gs, crop_coord){
+#-------------------------------------------------------------------------------
+.graphFromCoordinates <- function(coord){
   
-  # remove nodes
-  nodes <- gs@nodes
-  cx <- nodes$x >= crop_coord[1] & nodes$x <= crop_coord[2]
-  cy <- nodes$y >= crop_coord[3] & nodes$y <= crop_coord[4]
-  nodes <- nodes[ which(cx & cy), ]
+  # Check attributes
+  attr <- unique(colnames(coord))
+  attr <- attr[!is.na(attr)]
+  attr <- attr[!attr%in%c("x","y")]
   
-  # remove edges
-  idx <- (gs@edges$name1 %in% gs@nodes$name) & 
-    (gs@edges$name2 %in% gs@nodes$name) 
-  gs@edges <- gs@edges[idx,]
+  # Initialize a graph using 'spots' as vertices, with no edges
+  g <- make_empty_graph(n = nrow(coord), directed = FALSE)
+  if(!is.null(rownames(coord))){
+    V(g)$name <- rownames(coord)
+  }
+
+  # Add coordinates
+  V(g)$x <- coord$x
+  V(g)$y <- coord$y
+  V(g)$nodeSize <- 1
   
-  # center nodes
-  nodes$x <- nodes$x - mean(range(nodes$x))
-  nodes$y <- nodes$y - mean(range(nodes$y))
-  from <- range(c(nodes$x, nodes$y))
-  nodes$x <- scales::rescale(nodes$x, from = from, to=c(0,1))
-  nodes$y <- scales::rescale(nodes$y, from = from, to=c(0,1))
-  
-  # update graph
-  idx <- V(gs@graph)$name %in% rownames(nodes)
-  gs@graph <- igraph::delete_vertices(gs@graph, which(!idx))
-  idx <- match(rownames(nodes), V(gs@graph)$name)
-  V(gs@graph)$x[idx] <- nodes$x
-  V(gs@graph)$y[idx] <- nodes$y
-  gs@nodes <- nodes
-  
-  # crop image
-  if(gs@pars$image.layer){
-    nrow_mat <- nrow(gs@image)
-    ncol_mat <- ncol(gs@image)
-    xmin <- max(1, floor(crop_coord[1] * ncol_mat) + 1)
-    xmax <- min(ncol_mat, ceiling(crop_coord[2] * ncol_mat))
-    ymin <- max(1, floor(crop_coord[3] * nrow_mat) + 1)
-    ymax <- min(nrow_mat, ceiling(crop_coord[4] * nrow_mat))
-    gs@image <- gs@image[ymin:ymax, xmin:xmax, drop = FALSE]
+  if(length(attr)>0){
+    for(name in attr){
+      igraph::vertex_attr(g, name) <- coord[[name]]
+    }
   }
   
-  return(gs)
+  return(g)
+  
 }
 
 #-------------------------------------------------------------------------------

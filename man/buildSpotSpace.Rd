@@ -2,18 +2,20 @@
 % Please edit documentation in R/spotMethods.R
 \name{buildSpotSpace}
 \alias{buildSpotSpace}
-\title{Constructor of PathwaySpace-class Objects}
+\title{Constructor for GraphSpace-class objects from spot coordinates}
 \usage{
 buildSpotSpace(
   spot_coord,
   raster_image,
   mar = 0.1,
-  nrc = 500,
+  flip.v = FALSE,
+  flip.h = FALSE,
   flip.x = FALSE,
-  flip.y = FALSE,
+  flip.y = TRUE,
   rotate.xy = FALSE,
-  crop_coord = c(0, 1, 0, 1),
-  verbose = TRUE
+  verbose = TRUE,
+  crop_coord = deprecated(),
+  nrc = deprecated()
 )
 }
 \arguments{
@@ -23,46 +25,55 @@ row names and coordinates assigned to `x` and `y` column names.}
 \item{raster_image}{A raster image serving as the background on which 
 spot coordinates are mapped.}
 
-\item{mar}{A single numeric value (in [0,1]) indicating the size of the 
-outer margins (see \code{\link[RGraphSpace]{GraphSpace}}).}
+\item{mar}{A single numeric value in \code{[0, 0.5]} for the graph margins.}
 
-\item{nrc}{A single positive integer indicating the number of rows and 
-columns of a square image matrix onto which spot signals will be projected
-(see \code{\link[PathwaySpace]{buildPathwaySpace}}).}
+\item{flip.v}{Logical; whether to vertically flip the background image
+matrix (top-to-bottom) to align with the graph coordinate system.}
 
-\item{flip.x}{Logical; whether to flip the `raster_image` along the x-axis.}
+\item{flip.h}{Logical; whether to horizontally flip the background image
+matrix (left-to-right) to align with the graph coordinate system.}
 
-\item{flip.y}{Logical; whether to flip the `raster_image` along the y-axis.}
+\item{flip.x}{Logical; whether to flip the node coordinates along the x-axis.}
 
-\item{rotate.xy}{Logical; whether to rotate the `raster_image`.}
+\item{flip.y}{Logical; whether to flip the node coordinates along the y-axis.}
 
-\item{crop_coord}{An optional numeric vector of length four specifying a
-cropping region (xmin, xmax, ymin, ymax), with values in normalized 
-coordinates [0,1].}
+\item{rotate.xy}{Logical; whether to rotate graph coordinates.}
 
 \item{verbose}{Logical; whether to display detailed messages.}
+
+\item{crop_coord}{`r lifecycle::badge("deprecated")` Deprecated since
+SpotSpace 0.0.7; use \link[RGraphSpace]{cropGraphSpace} instead.}
+
+\item{nrc}{`r lifecycle::badge("deprecated")` Deprecated since
+SpotSpace 0.0.7; use \link[PathwaySpace]{buildPathwaySpace} instead.}
+}
+\value{
+A \code{\link[RGraphSpace:GraphSpace-class]{GraphSpace}} object with 
+integrated spatial and image data.
 }
 \description{
-\code{buildSpotSpace} constructs a PathwaySpace-class object 
-by integrating spatial spot coordinates with a raster image background.
+\code{buildSpotSpace} constructs a \code{GraphSpace-class} object 
+by integrating spatial spot coordinates with a raster background. This 
+wrapper streamlines data preparation for graph and spatial workflows, 
+such as in the \code{PathwaySpace} package.
 }
 \details{
-Proper spatial alignment between spot coordinates and the background image 
-depends on consistent coordinate conventions. Different graphics systems 
-and external software may adopt distinct origins and rendering directions 
-(e.g., top-left vs. bottom-left). To address these differences, 
-\code{buildSpotSpace} provides orientation control through \code{rotate.xy}, 
-\code{flip.x}, and \code{flip.y}. If misalignment is observed, users 
-should test alternative combinations of these arguments to achieve 
-correct spatial alignment.
+Spatial alignment between spot coordinates and background images 
+often requires orientation adjustments due to differing coordinate 
+conventions (e.g., top-left vs. bottom-left origins). \code{buildSpotSpace} 
+automates the initial object creation and calls \code{normalizeGraphSpace} 
+internally to handle these adjustments via \code{rotate.xy}, \code{flip.x}, 
+and \code{flip.y}.
 }
 \examples{
-# See examples in the SpotSpace's vignette:
-# vignette("SpotSpace")
+# See examples in the PathwaySpace's online tutorials:
+# https://sysbiolab.github.io/PathwaySpace/
 
 }
 \seealso{
-\code{\link[PathwaySpace]{buildPathwaySpace}}
+\link[RGraphSpace]{GraphSpace}, 
+\link[RGraphSpace]{normalizeGraphSpace}, 
+\link[PathwaySpace]{buildPathwaySpace}
 }
 \author{
 Sysbiolab Team
