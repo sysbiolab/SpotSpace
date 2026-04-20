@@ -7,7 +7,7 @@
 The *SpotSpace* package extends *PathwaySpace* methods to *Seurat* workflows, 
 providing tools for signal propagation and visualization in spatial transcriptomics. 
 By integrating signal processing with spatial visualization, *SpotSpace* allows the 
-projection of network signals onto spot-level coordinates to explore signal patterns  
+projection of network signals onto spot-level coordinates to explore signal patterns 
 on tissue microenvironments.
 
 ### Installation in R (>=4.4)
