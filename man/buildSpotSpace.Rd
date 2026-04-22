@@ -11,7 +11,7 @@ buildSpotSpace(
   flip.v = FALSE,
   flip.h = FALSE,
   flip.x = FALSE,
-  flip.y = TRUE,
+  flip.y = FALSE,
   rotate.xy = FALSE,
   verbose = TRUE,
   crop_coord = deprecated(),

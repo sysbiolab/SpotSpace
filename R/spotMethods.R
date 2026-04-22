@@ -60,7 +60,7 @@
 #' @aliases buildSpotSpace
 #' @export
 buildSpotSpace <- function(spot_coord, raster_image, mar = 0.1, 
-  flip.v = FALSE, flip.h = FALSE, flip.x = FALSE, flip.y = TRUE,
+  flip.v = FALSE, flip.h = FALSE, flip.x = FALSE, flip.y = FALSE,
   rotate.xy = FALSE, verbose = TRUE, 
   crop_coord = deprecated(), 
   nrc = deprecated()){
@@ -83,11 +83,9 @@ buildSpotSpace <- function(spot_coord, raster_image, mar = 0.1,
     stop("'spot_coord' is missing 'x' and 'y' coordinates.",
       call. = FALSE)
   }
-  
-  g <- .graphFromCoordinates(spot_coord)
-  
+ 
   #--- build GraphSpace-class
-  gs <- GraphSpace(g = g, verbose = verbose)
+  gs <- GraphSpace(g = spot_coord, verbose = verbose)
   
   if(missing(raster_image)){
     gs <- normalizeGraphSpace(gs, mar = mar,  
@@ -101,61 +99,4 @@ buildSpotSpace <- function(spot_coord, raster_image, mar = 0.1,
       verbose = verbose)
   }
   
-}
-
-#-------------------------------------------------------------------------------
-.graphFromCoordinates <- function(coord){
-  
-  # Check attributes
-  attr <- unique(colnames(coord))
-  attr <- attr[!is.na(attr)]
-  attr <- attr[!attr%in%c("x","y")]
-  
-  # Initialize a graph using 'spots' as vertices, with no edges
-  g <- make_empty_graph(n = nrow(coord), directed = FALSE)
-  if(!is.null(rownames(coord))){
-    V(g)$name <- rownames(coord)
-  }
-
-  # Add coordinates
-  V(g)$x <- coord$x
-  V(g)$y <- coord$y
-  V(g)$nodeSize <- 1
-  
-  if(length(attr)>0){
-    for(name in attr){
-      igraph::vertex_attr(g, name) <- coord[[name]]
-    }
-  }
-  
-  return(g)
-  
-}
-
-#-------------------------------------------------------------------------------
-#' @title  getNearestNode
-#' 
-#' @description \code{getNearestNode} retrieves the nearest neighbor for 
-#' each spot based on Euclidean distances.
-#' 
-#' @param ps A \code{\link[PathwaySpace]{PathwaySpace}} class object.
-#' @seealso \code{\link[RANN]{nn2}}
-#' @examples
-#' # See examples in the SpotSpace's vignette:
-#' # vignette("SpotSpace")
-#' 
-#' @importFrom RANN nn2
-#' @aliases getNearestNode
-#' @export
-#' 
-getNearestNode <- function(ps){
-  if(!is(ps, "GraphSpace")){
-    stop("'ps' should be either a 'GraphSpace' or 'PathwaySpace' class object.")
-  }
-  gxy <- getGraphSpace(ps, "nodes")
-  nnpg <- nn2(gxy[,c("x","y")], gxy[,c("x","y")], k=2)
-  nn.idx <- nnpg$nn.idx[,2]
-  nn.dists <- nnpg$nn.dists[,2]
-  nn <- data.frame(from=gxy$name, to=gxy$name[nn.idx], dist=nn.dists)
-  return(nn)
 }
